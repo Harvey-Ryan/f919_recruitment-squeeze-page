@@ -1,0 +1,480 @@
+/* ================================================================
+   VARIABLES
+   These are your primary dials. Adjust after adding real images.
+================================================================= */
+:root {
+  /* Laser origin — x aligns with weapon port, y = distance from top */
+  --laser-x:          50%;
+  --laser-start-y:    64vh;
+
+  /* How far the beam extends downward (start + max should approach 100vh) */
+  --laser-max-h:      45vh;
+
+  /* Laser palette — starts blue, transitions to red via scroll (see main.js) */
+  --laser-core:       #d0eeff;
+  --laser-mid:        #0099ff;
+  --laser-mid-tip:    rgba(0, 140, 255, 0.3);
+  --laser-outer:      rgba(0, 140, 255, 0.25);
+
+  /* Layer heights — tune to match image proportions */
+  --planet-h:         55vh;
+  --fg-h:             30vh;
+
+  /* Scene scroll length = scene-multiplier × 100vh total height */
+  --scene-multiplier: 4;
+
+  /* Palette */
+  --bg:               #010408;
+  --space-near:       #06111e;
+}
+
+/* ================================================================
+   RESET
+================================================================= */
+*, *::before, *::after {
+  box-sizing: border-box;
+  margin: 0;
+  padding: 0;
+}
+
+html { scroll-behavior: auto; }   /* Lenis takes over */
+
+body {
+  background: var(--bg);
+  color: rgba(255, 255, 255, 0.82);
+  font-family: 'Courier New', monospace;
+  overflow-x: hidden;
+  -webkit-font-smoothing: antialiased;
+}
+
+img { display: block; max-width: 100%; }
+a   { color: inherit; }
+
+/* ================================================================
+   SCENE SECTION
+   Tall container; the stage inside is sticky so the animation
+   plays across the full scroll distance before the page releases.
+================================================================= */
+.scene-section {
+  position: relative;
+  height: calc(var(--scene-multiplier) * 100vh);
+}
+
+.scene-stage {
+  position: sticky;
+  top: 0;
+  height: 100vh;
+  width: 100%;
+  overflow: hidden;
+}
+
+/* ================================================================
+   LAYER BASE
+================================================================= */
+.layer {
+  position: absolute;
+  inset: 0;
+}
+
+/* ================================================================
+   LAYER 0 — Deep space
+================================================================= */
+.layer--space {
+  z-index: 0;
+  background: radial-gradient(
+    ellipse 140% 70% at 50% -5%,
+    var(--space-near) 0%,
+    var(--bg) 55%,
+    #000 100%
+  );
+}
+
+/* Stars are injected by JS; this defines their shared style. */
+.star {
+  position: absolute;
+  border-radius: 50%;
+  background: #fff;
+  pointer-events: none;
+  will-change: opacity;
+  animation: twinkle var(--d, 3s) ease-in-out infinite;
+  animation-delay: var(--delay, 0s);
+}
+
+@keyframes twinkle {
+  0%, 100% { opacity: var(--o, 0.55); }
+  50%       { opacity: calc(var(--o, 0.55) * 0.12); }
+}
+
+/* ================================================================
+   LAYER 1 — Space station
+================================================================= */
+.layer--station {
+  z-index: 2;
+  display: flex;
+  align-items: flex-start;
+  justify-content: center;
+  padding-top: 6vh;
+}
+
+.station-img {
+  max-height: 58vh;     /* bottom edge should sit near --laser-start-y */
+  width: auto;
+  max-width: 64%;
+  object-fit: contain;
+}
+
+/* ================================================================
+   LASER
+   An absolutely positioned div whose height GSAP animates from
+   0 → --laser-max-h as the user scrolls. Three child divs layer
+   the core, inner glow, and outer atmospheric halo on top of each
+   other; they all fill 100% of the parent's growing height.
+================================================================= */
+.laser {
+  position: absolute;
+  top: var(--laser-start-y);
+  left: var(--laser-x);
+  transform: translateX(-50%);
+  height: 0;             /* animated by GSAP */
+  z-index: 6;
+  pointer-events: none;
+  will-change: height;
+}
+
+.laser__outer,
+.laser__mid,
+.laser__core {
+  position: absolute;
+  top: 0;
+  left: 50%;
+  transform: translateX(-50%);
+  height: 100%;
+}
+
+/* Outermost atmospheric bleed */
+.laser__outer {
+  width: 64px;
+  background: linear-gradient(
+    to bottom,
+    transparent            0%,
+    var(--laser-outer)     6%,
+    var(--laser-outer)    94%,
+    transparent          100%
+  );
+  filter: blur(14px);
+  animation: laser-flicker 0.14s ease-in-out infinite;
+}
+
+/* Soft inner glow */
+.laser__mid {
+  width: 16px;
+  background: linear-gradient(
+    to bottom,
+    transparent              0%,
+    var(--laser-mid)         4%,
+    var(--laser-mid)        96%,
+    var(--laser-mid-tip)   100%
+  );
+  filter: blur(5px);
+  opacity: 0.9;
+}
+
+/* Bright core line */
+.laser__core {
+  width: 5px;
+  background: linear-gradient(
+    to bottom,
+    transparent         0%,
+    var(--laser-core)   3%,
+    var(--laser-core)  97%,
+    var(--laser-mid)  100%
+  );
+}
+
+/* Impact bloom at the beam tip — fades in via GSAP when planet arrives */
+.laser__impact {
+  position: absolute;
+  bottom: -24px;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 70px;
+  height: 48px;
+  border-radius: 50%;
+  background: radial-gradient(
+    ellipse at 50% 10%,
+    rgba(255, 140, 40, 0.9)  0%,
+    rgba(255, 50,  0,  0.4) 45%,
+    transparent             70%
+  );
+  filter: blur(5px);
+  opacity: 0;            /* set to 1 by GSAP */
+}
+
+@keyframes laser-flicker {
+  0%   { opacity: 0.72; }
+  33%  { opacity: 1;    }
+  66%  { opacity: 0.84; }
+  100% { opacity: 0.72; }
+}
+
+/* ================================================================
+   LAYER 2 — Planet surface  (rises from below)
+================================================================= */
+.layer--planet {
+  z-index: 3;
+  top: auto;
+  bottom: 0;
+  height: var(--planet-h);
+  overflow: hidden;
+  /* GSAP starts this at translateY(110%) then animates to y:0 */
+}
+
+.planet-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* ================================================================
+   QUOTES
+   Absolutely positioned beside the laser, alternating left/right.
+   z-index 8 keeps them above all scene layers during the laser phase.
+================================================================= */
+.quotes {
+  position: absolute;
+  inset: 0;
+  z-index: 8;
+  pointer-events: none;
+}
+
+.quote {
+  position: absolute;
+  max-width: 32vw;
+  opacity: 0;
+}
+
+.quote--left {
+  right: calc(50% + 56px);
+  text-align: right;
+}
+
+.quote--right {
+  left: calc(50% + 56px);
+}
+
+.quote__text {
+  font-size: 1.05rem;
+  line-height: 1.55;
+  letter-spacing: 0.03em;
+  color: rgba(255, 255, 255, 0.96);
+  font-style: italic;
+  font-weight: 500;
+  text-shadow:
+    0 0 48px rgba(255, 80, 0, 0.45),
+    0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.quote__attr {
+  margin-top: 0.55em;
+  font-size: 0.6rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 80, 0, 0.95);
+  text-shadow: 0 0 24px rgba(255, 80, 0, 0.65);
+}
+
+/* ================================================================
+   LAYER 2.5 — Sand atmosphere / dust clouds
+   Three canvas tiles are injected by JS. overflow:hidden clips the
+   2× wide canvases so only one viewport-width of each is visible
+   at a time; JS translates them at different speeds for parallax.
+   The mask gradient dissolves the top edge into the star field.
+================================================================= */
+.layer--clouds {
+  z-index: 6;
+  top: auto;
+  bottom: 0;
+  height: 65vh;              /* keep in sync with VH constant in main.js */
+  overflow: hidden;
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 82%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 82%, transparent 100%);
+}
+
+
+/* Canvas tiles: positioned at top-left; width/height set by JS */
+.cloud-canvas {
+  position: absolute;
+  top: 0;
+  left: 0;
+  display: block;
+}
+
+/* ================================================================
+   LAYER 3 — Foreground element  (closest, most parallax)
+================================================================= */
+.layer--foreground {
+  z-index: 7;
+  top: auto;
+  bottom: 0;
+  height: var(--fg-h);
+  /* GSAP starts this at translateY(130%) then animates to y:0 */
+}
+
+.foreground-img {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  object-position: top center;
+}
+
+/* ================================================================
+   PLACEHOLDERS
+   Shown when real images haven't been added yet.
+   JS hides them once the sibling <img> fires a load event.
+================================================================= */
+.placeholder {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5em;
+  pointer-events: none;
+  border: 1px dashed rgba(255, 255, 255, 0.15);
+}
+
+.placeholder span {
+  font-size: 0.58rem;
+  letter-spacing: 0.3em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.32);
+}
+
+.placeholder em {
+  font-style: normal;
+  font-size: 0.48rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.16);
+}
+
+/* Station: sized and positioned to match where the image will sit */
+.placeholder--station {
+  position: absolute;
+  top: 6vh;
+  left: 50%;
+  transform: translateX(-50%);
+  width: 64%;
+  height: 28vh;
+  /* background: rgba(5, 18, 45, 0.5); */
+}
+
+/* Planet: full-width band across the layer */
+.placeholder--planet {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(18, 45, 18, 0.65),
+    rgba(6,  26,  6, 0.88)
+  );
+  border-top: 1px dashed rgba(60, 180, 60, 0.22);
+}
+
+/* Foreground: darker, closer feel */
+.placeholder--foreground {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to bottom,
+    rgba(48, 26, 6, 0.7),
+    rgba(28, 12, 0, 0.92)
+  );
+  border-top: 1px dashed rgba(200, 140, 60, 0.25);
+}
+
+/* ================================================================
+   SCROLL HINT
+================================================================= */
+.scroll-hint {
+  position: absolute;
+  bottom: 5vh;
+  left: 50%;
+  transform: translateX(-50%);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.6rem;
+  z-index: 10;
+}
+
+.scroll-hint__label {
+  font-size: 0.52rem;
+  letter-spacing: 0.38em;
+  color: rgba(255, 255, 255, 0.3);
+}
+
+.scroll-hint__line {
+  width: 1px;
+  height: 38px;
+  background: linear-gradient(to bottom, rgba(255, 255, 255, 0.28), transparent);
+  transform-origin: top center;
+  animation: hint-pulse 1.9s ease-in-out infinite;
+}
+
+@keyframes hint-pulse {
+  0%, 100% { transform: scaleY(1);    opacity: 0.5; }
+  50%       { transform: scaleY(0.35); opacity: 1;   }
+}
+
+/* ================================================================
+   LINKS SECTION
+================================================================= */
+.links-section {
+  min-height: 100vh;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background: linear-gradient(to bottom, #000 0%, var(--bg) 28%);
+}
+
+.links-nav {
+  display: flex;
+  flex-direction: column;
+  gap: 2.5rem;
+  width: min(560px, 90vw);
+}
+
+.link-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 1.25rem 0;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.1);
+  text-decoration: none;
+  transition: border-color 0.3s ease, color 0.3s ease;
+}
+
+.link-item:hover {
+  border-color: rgba(255, 50, 0, 0.5);
+  color: #fff;
+}
+
+.link-item__label {
+  font-size: 1.05rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+  transition: transform 0.38s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+.link-item__arrow {
+  font-size: 1rem;
+  color: var(--laser-mid);
+  opacity: 0;
+  transform: translateX(-8px);
+  transition:
+    transform 0.38s cubic-bezier(0.16, 1, 0.3, 1),
+    opacity   0.38s ease;
+}
+
+.link-item:hover .link-item__label { transform: translateX(8px); }
+.link-item:hover .link-item__arrow { transform: translateX(0); opacity: 1; }
