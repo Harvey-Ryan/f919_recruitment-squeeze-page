@@ -297,18 +297,18 @@ tl.fromTo('.layer--foreground',
 // so foreground content (starts at 40vh) overlaps planet by only 20vh — half of
 // the overlap that would occur at y:'-20%'.
 tl.fromTo('.layer--foreground',
-  { y: '40%' },
+  { y: '40%', immediateRender: false },
   { y: 0, ease: 'none', duration: 7.04 },
   8.96
 );
 tl.fromTo('.layer--planet',
-  { y: 0 },
+  { y: 0, immediateRender: false },
   { y: '-40%', ease: 'none', duration: 7.04 },
   8.96
 );
 // Clouds: 40vh / 65vh height = 61.5%
 tl.fromTo('.layer--clouds',
-  { y: 0 },
+  { y: 0, immediateRender: false },
   { y: '-61.5%', ease: 'none', duration: 7.04 },
   8.96
 );
