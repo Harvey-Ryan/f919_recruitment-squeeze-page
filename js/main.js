@@ -303,15 +303,17 @@ if (isMobile) {
     8.96
   );
 }
-tl.to('.layer--planet',
-  { y: '-40%', ease: 'none', duration: 7.04, startAt: { y: 0 } },
-  8.96
-);
-// Clouds: 40vh / 65vh height = 61.5%
-tl.to('.layer--clouds',
-  { y: '-61.5%', ease: 'none', duration: 7.04, startAt: { y: 0 } },
-  8.96
-);
+if (!isMobile) {
+  tl.to('.layer--planet',
+    { y: '-40%', ease: 'none', duration: 7.04, startAt: { y: 0 } },
+    8.96
+  );
+  // Clouds: 40vh / 65vh height = 61.5%
+  tl.to('.layer--clouds',
+    { y: '-61.5%', ease: 'none', duration: 7.04, startAt: { y: 0 } },
+    8.96
+  );
+}
 // CTA and laser remain fixed at their initial rendered positions through Phase 3b
 
 /* ================================================================
