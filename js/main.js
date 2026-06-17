@@ -232,22 +232,23 @@ tl.to(document.documentElement, {
   ease: 'none', duration: 16,
 }, 0);
 
-// Quotes — one at a time, centered at laser tip (50vh)
-// yPercent: -50 vertically centers each quote at top: 50vh
+// Quotes — marquee style: pop in from the side, then scroll upward off screen
+// Entry (0.25) + exit (0.75) = 1.0 unit, filling the gap between each quote
 document.querySelectorAll('.quote').forEach(q => {
-  const tIn  = parseFloat(q.dataset.t);
-  const tOut = tIn + 0.5;
+  const tIn    = parseFloat(q.dataset.t);
   const isLeft = q.classList.contains('quote--left');
 
+  // Pop in from the side
   tl.fromTo(q,
-    { opacity: 0, x: isLeft ? 60 : -60, yPercent: -50, y: 0 },
-    { opacity: 1, x: 0, yPercent: -50, y: 0, duration: 0.3, ease: 'back.out(1.7)' },
+    { opacity: 0, x: isLeft ? 50 : -50, yPercent: -50, y: 0 },
+    { opacity: 1, x: 0, yPercent: -50, y: 0, duration: 0.25, ease: 'back.out(1.4)' },
     tIn
   );
 
+  // Scroll upward off screen, fading in the final stretch
   tl.to(q,
-    { opacity: 0, yPercent: -50, duration: 0.5, ease: 'power2.in' },
-    tOut
+    { y: -(window.innerHeight * 0.65), opacity: 0, yPercent: -50, duration: 0.75, ease: 'power2.in' },
+    tIn + 0.25
   );
 });
 
