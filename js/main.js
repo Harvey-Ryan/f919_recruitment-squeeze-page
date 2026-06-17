@@ -259,6 +259,23 @@ document.querySelectorAll('.quote').forEach(q => {
   );
 });
 
+// Info cards — same pop-in / scroll-up / fade-out pattern as quotes
+document.querySelectorAll('.card').forEach(card => {
+  const tIn    = parseFloat(card.dataset.t);
+  const isLeft = card.classList.contains('card--left');
+
+  tl.fromTo(card,
+    { opacity: 0, x: isLeft ? 40 : -40, yPercent: -50, y: 0 },
+    { opacity: 1, x: 0, yPercent: -50, y: 0, duration: 0.25, ease: 'back.out(1.4)' },
+    tIn
+  );
+
+  tl.to(card,
+    { y: -(window.innerHeight * 0.55), opacity: 0, yPercent: -50, duration: 0.75, ease: 'power2.in' },
+    tIn + 0.25
+  );
+});
+
 // Clouds anchored to planet top — same 110vh absolute travel as planet
 tl.fromTo('.layer--clouds',
   { y: '169.2%' },
@@ -292,8 +309,11 @@ tl.fromTo('.cta-block',
 // Phase 3a (37.5%→56% scroll, t=6→8.96): foreground drifts up like a camera pan.
 // Accounts for top 40% empty vector — settles at y:'40%' before all layers lock.
 if (isMobile) {
-  // Mobile: skip parallax animation — snap foreground to final position at Phase 3b start
-  tl.set('.layer--foreground', { y: 0, immediateRender: false }, 8.96);
+  tl.fromTo('.layer--foreground',
+    { y: '100%' },
+    { y: 0, ease: 'power1.out', duration: 4.8, immediateRender: false },
+    11.2
+  );
 } else {
   // Desktop: full two-phase foreground animation
   tl.fromTo('.layer--foreground',

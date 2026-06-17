@@ -462,6 +462,72 @@ a   { color: inherit; }
 
 
 /* ================================================================
+   CARDS
+   Centered in viewport, opaque gray background, appear between
+   36%–67% scroll. Animated by GSAP (same pattern as quotes).
+================================================================= */
+.cards {
+  position: absolute;
+  inset: 0;
+  z-index: 9;
+  pointer-events: none;
+}
+
+.card {
+  position: absolute;
+  top: 50vh;
+  max-width: 32vw;
+  opacity: 0;
+  background: rgba(30, 32, 38, 0.60);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 2rem 2.5rem;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.18),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.70),
+    inset 0 3px 16px rgba(0, 0, 0, 0.45),
+    0 8px 32px rgba(0, 0, 0, 0.7),
+    0 2px 8px rgba(0, 0, 0, 0.5);
+}
+
+.card--left {
+  right: calc(50% + 56px);
+  text-align: right;
+}
+
+.card--right {
+  left: calc(50% + 56px);
+}
+
+.card__text {
+  font-size: 1.15rem;
+  line-height: 1.65;
+  letter-spacing: 0.025em;
+  color: rgba(255, 255, 255, 0.90);
+  font-style: normal;
+  font-weight: 400;
+  text-shadow:
+    0 1px 3px rgba(0, 0, 0, 0.9),
+    0 3px 12px rgba(0, 0, 0, 0.7);
+}
+
+.card__text + .card__text {
+  margin-top: 0.75em;
+}
+
+@media (max-width: 768px) {
+  .card,
+  .card--left,
+  .card--right {
+    left: 10vw;
+    right: auto;
+    width: 80vw;
+    max-width: none;
+    text-align: left;
+  }
+}
+
+/* ================================================================
    SCROLL HUD
 ================================================================= */
 #scroll-hud {
