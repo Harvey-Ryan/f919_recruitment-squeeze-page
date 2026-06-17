@@ -1,6 +1,9 @@
 /* ================================================================
    INIT
 ================================================================= */
+history.scrollRestoration = 'manual';
+window.scrollTo(0, 0);
+
 gsap.registerPlugin(ScrollTrigger);
 
 const isMobile = window.matchMedia('(max-width: 768px)').matches;
