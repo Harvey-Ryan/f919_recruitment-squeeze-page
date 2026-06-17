@@ -5,6 +5,9 @@
   <meta name="viewport" content="width=device-width, initial-scale=1.0" />
   <title><!-- Page title --></title>
   <link rel="preconnect" href="https://cdnjs.cloudflare.com" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Bebas+Neue&display=swap" rel="stylesheet" />
   <link rel="stylesheet" href="css/style.css" />
 </head>
 <body>
@@ -80,6 +83,14 @@
 
         <!-- LAYER 2.5: Sand atmosphere / dust clouds (canvas injected by JS) -->
         <div class="layer layer--clouds" aria-hidden="true"></div>
+
+        <!-- CTA: above all layers, follows planet movement in Phase 3 -->
+        <div class="cta-block" aria-hidden="true">
+          <h2 class="headline__text">Join the chaos!</h2>
+          <div class="cta-btn-wrap">
+            <button class="cta-btn">Speak to a recruiter</button>
+          </div>
+        </div>
 
         <!-- LAYER 3: Foreground element (nearest, adds depth) -->
         <div class="layer layer--foreground">

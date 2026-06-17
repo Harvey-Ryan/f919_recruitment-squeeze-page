@@ -281,7 +281,7 @@ a   { color: inherit; }
 ================================================================= */
 .layer--clouds {
   z-index: 6;
-  top: 0;
+  top: -15vh;
   bottom: auto;
   height: 65vh;
   overflow: hidden;
@@ -314,6 +314,99 @@ a   { color: inherit; }
   height: 100%;
   object-fit: contain;
   object-position: center bottom;
+}
+
+.cta-block {
+  position: absolute;
+  top: 50%;
+  left: 0;
+  right: 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 2.25rem;
+  text-align: center;
+  pointer-events: none;
+  opacity: 0;
+  z-index: 10;
+}
+
+.headline__text {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-size: clamp(3.5rem, 10vw, 8rem);
+  font-weight: 400;
+  letter-spacing: 0.06em;
+  line-height: 1;
+  color: rgba(255, 255, 255, 0.96);
+  text-shadow:
+    0 2px 8px #000,
+    0 6px 24px #000,
+    0 0 80px rgba(255, 80, 0, 0.55),
+    0 0 140px rgba(255, 80, 0, 0.25),
+    0 2px 12px rgba(0, 0, 0, 0.9);
+}
+
+.cta-btn-wrap {
+  display: inline-flex;
+  animation: heat-aura 2.6s ease-in-out infinite;
+}
+
+.cta-btn-wrap:hover {
+  animation-play-state: paused;
+  filter:
+    drop-shadow(0 0 22px var(--laser-mid))
+    drop-shadow(0 0 55px var(--laser-mid))
+    drop-shadow(0 0 110px var(--laser-outer));
+  transition: filter 0.2s ease;
+}
+
+@keyframes heat-aura {
+  0%, 100% {
+    filter:
+      drop-shadow(0 0 8px var(--laser-mid))
+      drop-shadow(0 0 22px var(--laser-outer))
+      drop-shadow(0 0 52px var(--laser-outer));
+  }
+  40% {
+    filter:
+      drop-shadow(0 0 18px var(--laser-mid))
+      drop-shadow(0 0 42px var(--laser-mid))
+      drop-shadow(0 0 90px var(--laser-outer));
+  }
+  72% {
+    filter:
+      drop-shadow(0 0 5px var(--laser-mid))
+      drop-shadow(0 0 14px var(--laser-outer))
+      drop-shadow(0 0 36px var(--laser-outer));
+  }
+}
+
+.cta-btn {
+  pointer-events: all;
+  padding: 1em 3.5em;
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-size: clamp(1.1rem, 2.5vw, 1.5rem);
+  font-weight: 400;
+  letter-spacing: 0.22em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(140, 30, 0, 0.35);
+  border: 2px solid var(--laser-mid);
+  cursor: pointer;
+  clip-path: polygon(
+    14px 0%, calc(100% - 14px) 0%,
+    100% 14px, 100% calc(100% - 14px),
+    calc(100% - 14px) 100%, 14px 100%,
+    0% calc(100% - 14px), 0% 14px
+  );
+  text-shadow:
+    0 2px 6px rgba(0, 0, 0, 0.9),
+    0 0 28px var(--laser-mid);
+  transition: background 0.25s ease;
+}
+
+.cta-btn:hover {
+  background: rgba(200, 50, 0, 0.5);
 }
 
 /* ================================================================

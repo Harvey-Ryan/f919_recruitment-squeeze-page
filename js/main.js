@@ -173,7 +173,7 @@ const laserOffset = { y: 0 };  // px offset applied in Phase 3 to move laser wit
     const el   = (!img.hidden && img.complete && img.naturalWidth > 0) ? img : ph;
     const rect = el.getBoundingClientRect();
 
-    const tipY   = window.innerHeight * 0.5;
+    const tipY   = window.innerHeight * 0.55;
     const span   = Math.max(0, tipY - rect.bottom);
     const height = span * laserState.progress;
 
@@ -196,9 +196,8 @@ const laserOffset = { y: 0 };  // px offset applied in Phase 3 to move laser wit
    t 2 → 8.5  Quotes appear one at a time at 50vh (laser tip)
    t 4 → 8    Planet surface + clouds rise and lock  (25%→50% scroll)
    t 4.5→6    Impact bloom fades in
-   t 8 → 8.5  Foreground slides up to 15% overlap
-   t 11.52→13.6   Foreground rises alone over locked planet  (72%→85% scroll)
-   t 13.6 →16     Foreground anchored to planet+clouds, all rise together  (85%→100%)
+   t 9.6 →11.6    Foreground rises into 20% planet overlap  (60%→72.5% scroll)
+   t 11.68→16     Foreground anchored to planet+clouds, all rise together  (73%→100%)
 ================================================================= */
 // Keep foreground off-screen until Phase 1 starts (prevents it showing at y:0 on load)
 gsap.set('.layer--foreground', { y: '100%' });
@@ -272,42 +271,51 @@ tl.to('.laser__impact',
   4.5
 );
 
-// Phase 1: foreground slides up to overlap bottom 15% of planet once planet locks at t=8
+// Foreground entry: slowly rises to ~40% visible planet overlap at 60% scroll, holds until Phase 3.
+// y:'25%' accounts for the PNG's ~35vh transparent top region:
+// element top lands at 25vh, image content starts at ~60vh = bottom 40% of planet.
 tl.fromTo('.layer--foreground',
   { y: '100%' },
-  { y: '85%', ease: 'power2.out', duration: 0.5 },
-  8
+  { y: '25%', ease: 'power2.out', duration: 2.0 },
+  9.6
 );
 
-// Phase 2: foreground rises alone while planet and clouds stay locked (72%→85%)
-tl.fromTo('.layer--foreground',
-  { y: '85%' },
-  { y: '45.5%', ease: 'none', duration: 2.08 },
-  11.52
+// Headline + CTA fade in at 70% scroll (t=11.2)
+// yPercent: -50 centers the block at top:50%; -38 is the slide-in start (12% lower)
+tl.fromTo('.cta-block',
+  { opacity: 0, yPercent: -38 },
+  { opacity: 1, yPercent: -50, ease: 'power2.out', duration: 0.6 },
+  11.2
 );
 
-// Phase 3: foreground anchored to planet surface — all three rise in sync (85%→100%)
-// All travel 45.5vh at identical speed; ease: none keeps them locked together
+// Phase 3: all layers rise in sync (73%→100% scroll)
+// All travel 25vh; clouds: 25/65×100 = 38.5% of their 65vh height
 tl.fromTo('.layer--foreground',
-  { y: '45.5%' },
-  { y: 0, ease: 'none', duration: 2.4 },
-  13.6
+  { y: '25%' },
+  { y: 0, ease: 'none', duration: 4.32 },
+  11.68
 );
 tl.fromTo('.layer--planet',
   { y: 0 },
-  { y: '-45.5%', ease: 'none', duration: 2.4 },
-  13.6
+  { y: '-25%', ease: 'none', duration: 4.32 },
+  11.68
 );
 tl.fromTo('.layer--clouds',
   { y: 0 },
-  { y: '-70%', ease: 'none', duration: 2.4 },
-  13.6
+  { y: '-38.5%', ease: 'none', duration: 4.32 },
+  11.68
+);
+// CTA rides with the planet in Phase 3 — matches planet's -25vh travel
+tl.fromTo('.cta-block',
+  { y: 0 },
+  { y: -(window.innerHeight * 0.25), ease: 'none', duration: 4.32 },
+  11.68
 );
 // Laser rides with the planet — animate the offset consumed by the ticker
 tl.fromTo(laserOffset,
   { y: 0 },
-  { y: -(window.innerHeight * 0.455), ease: 'none', duration: 2.4 },
-  13.6
+  { y: -(window.innerHeight * 0.25), ease: 'none', duration: 4.32 },
+  11.68
 );
 
 /* ================================================================
