@@ -11,18 +11,13 @@
 
   <div id="scroll-root">
 
-    <!--
-    ┌──────────────────────────────────────────────────────────┐
-    │  SCENE  ·  sticky stage  ·  4× viewport scroll distance  │
-    └──────────────────────────────────────────────────────────┘
-    -->
     <section class="scene-section" id="scene">
       <div class="scene-stage">
 
         <!-- LAYER 0: Deep space background + generated star field -->
         <div class="layer layer--space" aria-hidden="true"></div>
 
-        <!-- LAYER 1: Space station (top of frame) -->
+        <!-- LAYER 1: Space station -->
         <div class="layer layer--station">
           <img
             class="station-img"
@@ -30,13 +25,10 @@
             alt="Space station"
             onerror="this.hidden=true"
           />
-          <div class="placeholder--station" aria-hidden="true">
-            <!-- <span>SPACE STATION</span>
-            <em>assets/images/station.png</em> -->
-          </div>
+          <div class="placeholder--station" aria-hidden="true"></div>
         </div>
 
-        <!-- LASER: absolutely positioned, grows downward via scroll -->
+        <!-- LASER: position and height set entirely by JS (Model 2) -->
         <div class="laser" aria-hidden="true">
           <div class="laser__outer"></div>
           <div class="laser__mid"></div>
@@ -46,50 +38,41 @@
 
         <!-- LAYER 2: Planet surface (rises from below) -->
         <div class="layer layer--planet">
-          <!--
-            Full-width crop recommended — landscape orientation.
-            Object-position is set to top-center so the surface
-            horizon appears near the top of the layer.
-          -->
           <img
             class="planet-img"
             src="assets/images/planet.jpg"
             alt="Planet surface"
             onerror="this.hidden=true"
           />
-          <div class= aria-hidden="true">
-            <span>PLANET SURFACE</span>
-            <em>assets/images/planet.png</em>
-          </div>
         </div>
 
-        <!-- QUOTES: each appears as the laser descends to its position -->
+        <!-- QUOTES: appear one at a time at the laser tip (50vh) -->
         <div class="quotes" aria-hidden="true">
-          <div class="quote quote--left"  data-t="0.6">
+          <div class="quote quote--left"  data-t="2.0">
             <p class="quote__text">"If you don't behave, I'll call Aero back."</p>
             <p class="quote__attr">— ArcSolo3</p>
           </div>
-          <div class="quote quote--right" data-t="1.2">
+          <div class="quote quote--right" data-t="3.0">
             <p class="quote__text">"You wouldn't like it. I'd just lay there and sweat."</p>
             <p class="quote__attr">— Curtwright</p>
           </div>
-          <div class="quote quote--left"  data-t="1.9">
+          <div class="quote quote--left"  data-t="4.0">
             <p class="quote__text">"Can I breathe on this planet? .....oh shit."</p>
             <p class="quote__attr">— Arrades</p>
           </div>
-          <div class="quote quote--right" data-t="2.6">
+          <div class="quote quote--right" data-t="5.0">
             <p class="quote__text">"Mango, you are a c*nt."</p>
             <p class="quote__attr">— Darth_Pie</p>
           </div>
-          <div class="quote quote--left"  data-t="3.2">
+          <div class="quote quote--left"  data-t="6.0">
             <p class="quote__text">"AND I STAND BY IT!"</p>
             <p class="quote__attr">— Also Darth_Pie</p>
           </div>
-          <div class="quote quote--right" data-t="3.8">
+          <div class="quote quote--right" data-t="7.0">
             <p class="quote__text">"I'm saving my taint for Jesus."</p>
             <p class="quote__attr">— NeedForCaffeine</p>
           </div>
-          <div class="quote quote--left"  data-t="4.4">
+          <div class="quote quote--left"  data-t="8.0">
             <p class="quote__text">"I wouldn't mind watching..."</p>
             <p class="quote__attr">— QueenFae</p>
           </div>
@@ -100,21 +83,12 @@
 
         <!-- LAYER 3: Foreground element (nearest, adds depth) -->
         <div class="layer layer--foreground">
-          <!--
-            Terrain, debris, or close structure.
-            Overlaps the planet and moves at a faster parallax
-            rate to sell the depth illusion.
-          -->
           <img
             class="foreground-img"
             src="assets/images/foreground.png"
             alt="Foreground"
             onerror="this.hidden=true"
           />
-          <div class="placeholder placeholder--foreground" aria-hidden="true">
-            <span>FOREGROUND</span>
-            <em>assets/images/foreground.png</em>
-          </div>
         </div>
 
         <!-- Scroll prompt -->
@@ -126,32 +100,6 @@
       </div><!-- /scene-stage -->
     </section><!-- /scene-section -->
 
-    <!--
-    ┌─────────────────────────────────────────┐
-    │  LINKS  ·  content below the scene      │
-    └─────────────────────────────────────────┘
-    -->
-    <section class="links-section" id="links">
-      <nav class="links-nav" aria-label="External links">
-
-        <a class="link-item" href="#" target="_blank" rel="noopener noreferrer">
-          <span class="link-item__label">Link One</span>
-          <span class="link-item__arrow" aria-hidden="true">→</span>
-        </a>
-
-        <a class="link-item" href="#" target="_blank" rel="noopener noreferrer">
-          <span class="link-item__label">Link Two</span>
-          <span class="link-item__arrow" aria-hidden="true">→</span>
-        </a>
-
-        <a class="link-item" href="#" target="_blank" rel="noopener noreferrer">
-          <span class="link-item__label">Link Three</span>
-          <span class="link-item__arrow" aria-hidden="true">→</span>
-        </a>
-
-      </nav>
-    </section>
-
   </div><!-- /scroll-root -->
 
   <!-- GSAP core + ScrollTrigger -->
@@ -159,6 +107,10 @@
   <script src="https://cdnjs.cloudflare.com/ajax/libs/gsap/3.12.5/ScrollTrigger.min.js"></script>
   <!-- Lenis smooth scroll -->
   <script src="https://unpkg.com/@studio-freight/lenis@1.0.42/dist/lenis.min.js"></script>
+  <div id="scroll-hud" aria-hidden="true">
+    <span id="hud-pct">0%</span>
+    <span id="hud-t">t 0.00</span>
+  </div>
   <script src="js/main.js"></script>
 </body>
 </html>
