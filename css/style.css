@@ -216,6 +216,7 @@ a   { color: inherit; }
   bottom: 0;
   height: var(--planet-h);
   overflow: hidden;
+  transform: translateY(110%);
 }
 
 .planet-img {
@@ -285,6 +286,7 @@ a   { color: inherit; }
   bottom: auto;
   height: 65vh;
   overflow: hidden;
+  transform: translateY(169.2%);
   -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 82%, transparent 100%);
           mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 82%, transparent 100%);
 }
@@ -307,6 +309,7 @@ a   { color: inherit; }
   top: auto;
   bottom: 0;
   height: var(--fg-h);
+  transform: translateY(100%);
 }
 
 .foreground-img {
