@@ -354,18 +354,6 @@ if (!isMobile) {
   });
 })();
 
-/* ================================================================
-   SCROLL HINT
-================================================================= */
-gsap.to('.scroll-hint', {
-  opacity: 0, y: 10, ease: 'none',
-  scrollTrigger: {
-    trigger: '.scene-section',
-    start: 'top top',
-    end: '6% top',
-    scrub: true,
-  },
-});
 
 // Reveal layers after ScrollTrigger's first refresh so all initial
 // transforms are locked in before elements become visible
