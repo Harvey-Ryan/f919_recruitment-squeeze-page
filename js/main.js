@@ -295,22 +295,21 @@ tl.fromTo('.layer--foreground',
 // Phase 3b (56%→100% scroll, t=8.96→16): all layers locked and rise together 40vh.
 // Foreground ends at y:0 (no clipping). Planet travels to y:'-40%' (bottom at 60vh)
 // so foreground content (starts at 40vh) overlaps planet by only 20vh.
-// immediateRender:false in toVars prevents Phase 3b from overwriting Phase 3a's
-// immediately-rendered from state (which keeps layers off-screen on load).
-tl.fromTo('.layer--foreground',
-  { y: '40%' },
-  { y: 0, ease: 'none', duration: 7.04, immediateRender: false },
+// `to` tweens have immediateRender:false by default so they never overwrite the
+// off-screen positions set by Phase 3a's fromTo. startAt provides an explicit
+// starting value so GSAP doesn't rely on lazy state capture (which breaks on mobile
+// when the viewport height shifts between phases).
+tl.to('.layer--foreground',
+  { y: 0, ease: 'none', duration: 7.04, startAt: { y: '40%' } },
   8.96
 );
-tl.fromTo('.layer--planet',
-  { y: 0 },
-  { y: '-40%', ease: 'none', duration: 7.04, immediateRender: false },
+tl.to('.layer--planet',
+  { y: '-40%', ease: 'none', duration: 7.04, startAt: { y: 0 } },
   8.96
 );
 // Clouds: 40vh / 65vh height = 61.5%
-tl.fromTo('.layer--clouds',
-  { y: 0 },
-  { y: '-61.5%', ease: 'none', duration: 7.04, immediateRender: false },
+tl.to('.layer--clouds',
+  { y: '-61.5%', ease: 'none', duration: 7.04, startAt: { y: 0 } },
   8.96
 );
 // CTA and laser remain fixed at their initial rendered positions through Phase 3b
