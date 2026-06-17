@@ -256,14 +256,14 @@ document.querySelectorAll('.quote').forEach(q => {
 
 // Clouds anchored to planet top — same 110vh absolute travel as planet
 tl.fromTo('.layer--clouds',
-  { y: '169.2%' },
+  { y: '169.2%', immediateRender: false },
   { y: 0, ease: 'power1.out', duration: 4 },
   4
 );
 
 // Planet rises and locks at 50% scroll (t=8)
 tl.fromTo('.layer--planet',
-  { y: '110%' },
+  { y: '110%', immediateRender: false },
   { y: 0, ease: 'power1.out', duration: 4 },
   4
 );
@@ -287,7 +287,7 @@ tl.fromTo('.cta-block',
 // Phase 3a (37.5%→56% scroll, t=6→8.96): foreground drifts up like a camera pan.
 // Accounts for top 40% empty vector — settles at y:'40%' before all layers lock.
 tl.fromTo('.layer--foreground',
-  { y: '100%' },
+  { y: '100%', immediateRender: false },
   { y: '40%', ease: 'none', duration: 2.96 },
   6.0
 );
