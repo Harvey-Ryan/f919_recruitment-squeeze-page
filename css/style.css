@@ -14,7 +14,7 @@
   --fg-h:             100vh;
 
   /* Total scene height = scene-multiplier × 100vh */
-  --scene-multiplier: 12;
+  --scene-multiplier: 15;
 
   /* Palette */
   --bg:               #010408;

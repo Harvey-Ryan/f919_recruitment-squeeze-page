@@ -236,7 +236,7 @@ tl.to(document.documentElement, {
   '--laser-mid':     '#ff2800',
   '--laser-mid-tip': 'rgba(255, 80, 0, 0.3)',
   '--laser-outer':   'rgba(255, 60, 0, 0.2)',
-  ease: 'none', duration: 16,
+  ease: 'none', duration: 20,
 }, 0);
 
 // Quotes — marquee style: pop in from the side, then scroll upward off screen
@@ -255,7 +255,7 @@ document.querySelectorAll('.quote').forEach(q => {
   // Scroll upward off screen, fading in the final stretch
   tl.to(q,
     { y: -(window.innerHeight * 0.65), opacity: 0, yPercent: -50, duration: 0.75, ease: 'power2.in' },
-    tIn + 0.25
+    tIn + 0.45
   );
 });
 
@@ -272,28 +272,28 @@ document.querySelectorAll('.card').forEach(card => {
 
   tl.to(card,
     { y: -(window.innerHeight * 0.55), opacity: 0, yPercent: -50, duration: 0.75, ease: 'power2.in' },
-    tIn + 0.625
+    tIn + 1.0
   );
 });
 
 // Clouds anchored to planet top — same 110vh absolute travel as planet
 tl.fromTo('.layer--clouds',
   { y: '169.2%' },
-  { y: 0, ease: 'power1.out', duration: 4 },
-  4
+  { y: 0, ease: 'power1.out', duration: 5 },
+  5
 );
 
-// Planet rises and locks at 50% scroll (t=8)
+// Planet rises and locks at 50% scroll (t=10)
 tl.fromTo('.layer--planet',
   { y: '110%' },
-  { y: 0, ease: 'power1.out', duration: 4 },
-  4
+  { y: 0, ease: 'power1.out', duration: 5 },
+  5
 );
 
 // Impact bloom appears as planet arrives under the laser tip
 tl.to('.laser__impact',
-  { opacity: 1, ease: 'none', duration: 1.5 },
-  4.5
+  { opacity: 1, ease: 'none', duration: 1.875 },
+  5.625
 );
 
 // Headline + CTA fade in at 70% scroll (t=11.2)
@@ -301,7 +301,7 @@ tl.to('.laser__impact',
 tl.fromTo('.cta-block',
   { opacity: 0, yPercent: -38 },
   { opacity: 1, yPercent: -50, ease: 'power2.out', duration: 0.6 },
-  11.2
+  14
 );
 
 // Phase 3: all layers rise in sync (54%→100% scroll)
@@ -311,30 +311,30 @@ tl.fromTo('.cta-block',
 if (isMobile) {
   tl.fromTo('.layer--foreground',
     { y: '100%' },
-    { y: 0, ease: 'power1.out', duration: 4.8, immediateRender: false },
-    11.2
+    { y: 0, ease: 'power1.out', duration: 6, immediateRender: false },
+    14
   );
 } else {
   // Desktop: full two-phase foreground animation
   tl.fromTo('.layer--foreground',
     { y: '100%' },
-    { y: '40%', ease: 'none', duration: 2.96 },
-    6.0
+    { y: '40%', ease: 'none', duration: 3.7 },
+    7.5
   );
   tl.to('.layer--foreground',
-    { y: 0, ease: 'none', duration: 7.04, startAt: { y: '40%' } },
-    8.96
+    { y: 0, ease: 'none', duration: 2.8, startAt: { y: '40%' } },
+    11.2
   );
 }
 if (!isMobile) {
   tl.to('.layer--planet',
-    { y: '-40%', ease: 'none', duration: 7.04, startAt: { y: 0 } },
-    8.96
+    { y: '-40%', ease: 'none', duration: 2.8, startAt: { y: 0 } },
+    11.2
   );
   // Clouds: 40vh / 65vh height = 61.5%
   tl.to('.layer--clouds',
-    { y: '-61.5%', ease: 'none', duration: 7.04, startAt: { y: 0 } },
-    8.96
+    { y: '-61.5%', ease: 'none', duration: 2.8, startAt: { y: 0 } },
+    11.2
   );
 }
 // CTA and laser remain fixed at their initial rendered positions through Phase 3b
