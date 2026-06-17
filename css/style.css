@@ -32,6 +32,13 @@
 
 html { scroll-behavior: auto; }
 
+/* Hide animated layers until GSAP has applied initial positions */
+.loading .layer--planet,
+.loading .layer--clouds,
+.loading .layer--foreground {
+  visibility: hidden;
+}
+
 body {
   background: var(--bg);
   color: rgba(255, 255, 255, 0.82);

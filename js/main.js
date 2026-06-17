@@ -342,3 +342,6 @@ gsap.to('.scroll-hint', {
   },
 });
 
+// All GSAP initial states are now applied — reveal layers
+document.body.classList.remove('loading');
+
