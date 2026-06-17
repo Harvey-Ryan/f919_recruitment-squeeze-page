@@ -198,8 +198,11 @@ const laserOffset = { y: 0 };  // px offset applied in Phase 3 to move laser wit
    t 4.5→6    Impact bloom fades in
    t 8.64→16      Foreground rises from off-screen, all layers move together  (54%→100%)
 ================================================================= */
-// Keep foreground off-screen until Phase 3a begins
+// Set all off-screen starting positions before ScrollTrigger initialises
+// to prevent a flash of elements at their natural CSS positions on load
 gsap.set('.layer--foreground', { y: '100%' });
+gsap.set('.layer--planet',     { y: '110%' });
+gsap.set('.layer--clouds',     { y: '169.2%' });
 
 const tl = gsap.timeline({
   scrollTrigger: {
