@@ -138,18 +138,28 @@ document.querySelectorAll('.layer img').forEach(img => {
   }
 
   const ticks = [
+    // CEILING — dense bank straddling the planet top edge to fully conceal it
     buildLayer({
-      seed: 1001, count: 16,
+      seed: 4004, count: 26,
+      wMin: 350, wMax: 650, hMin: 280, hMax: 560,
+      yLo: -0.15, yHi: 0.35, speed: 0.007,
+      light: [235, 172, 68], dark: [162, 92, 22], alpha: 0.85,
+    }),
+    // FAR — large slow puffs spanning upper band
+    buildLayer({
+      seed: 1001, count: 20,
       wMin: 420, wMax: 720, hMin: 175, hMax: 300,
-      yLo: 0.04, yHi: 0.56, speed: 0.010,
+      yLo: 0.0, yHi: 0.56, speed: 0.010,
       light: [228, 168, 60], dark: [158, 88, 18], alpha: 0.58,
     }),
+    // MID — medium puffs, warmer ochre
     buildLayer({
-      seed: 2002, count: 18,
+      seed: 2002, count: 22,
       wMin: 280, wMax: 520, hMin: 115, hMax: 220,
-      yLo: 0.08, yHi: 0.55, speed: 0.022,
+      yLo: 0.0, yHi: 0.55, speed: 0.022,
       light: [245, 192, 78], dark: [176, 108, 28], alpha: 0.68,
     }),
+    // NEAR — smaller defined puffs, lowest band
     buildLayer({
       seed: 3003, count: 13,
       wMin: 175, wMax: 360, hMin: 80, hMax: 160,
@@ -208,6 +218,7 @@ const laserOffset = { y: 0 };  // px offset applied in Phase 3 to move laser wit
 gsap.set('.layer--foreground', { y: '100%' });
 gsap.set('.layer--planet',     { y: '110%' });
 gsap.set('.layer--clouds',     { y: '169.2%' });
+gsap.set('.fleet-block', { opacity: 0 });
 
 const tl = gsap.timeline({
   scrollTrigger: {
@@ -303,6 +314,48 @@ tl.fromTo('.cta-block',
   { opacity: 1, yPercent: -50, ease: 'power2.out', duration: 0.6 },
   14
 );
+
+// Fleet block: real-time reveal at 72% scroll — image fades in, then border draws,
+// then both lines type out. All chained so each step fires immediately after the last.
+ScrollTrigger.create({
+  trigger: '.scene-section',
+  start: '72% top',
+  once: true,
+  onEnter() {
+    const LINES = [
+      { el: document.querySelectorAll('.fleet-id__line')[0], text: 'FLEET 919' },
+      { el: document.querySelectorAll('.fleet-id__line')[1], text: 'JOIN THE FIGHT' },
+    ];
+    const rt = gsap.timeline();
+
+    // 1. Logo fades in
+    rt.fromTo('.fleet-block',
+      { opacity: 0, y: 10 },
+      { opacity: 1, y: 0, ease: 'power2.out', duration: 0.5 }
+    );
+
+    // 2. Border draws immediately after
+    rt.fromTo('.fleet-id__border',
+      { scaleY: 0 },
+      { scaleY: 1, ease: 'power2.out', duration: 0.35 }
+    );
+
+    // 3. Each line types out in sequence
+    LINES.forEach(({ el, text }, i) => {
+      const state = { n: 0 };
+      rt.fromTo(state,
+        { n: 0 },
+        {
+          n: text.length,
+          ease: 'none',
+          duration: text.length * 0.07,
+          onUpdate() { el.textContent = text.slice(0, Math.round(state.n)); },
+        },
+        `+=${i === 0 ? 0.05 : 0.15}`
+      );
+    });
+  },
+});
 
 // Phase 3: all layers rise in sync (54%→100% scroll)
 // All travel 25vh; clouds: 25/65×100 = 38.5% of their 65vh height

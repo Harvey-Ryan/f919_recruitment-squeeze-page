@@ -296,8 +296,8 @@ a   { color: inherit; }
   height: 65vh;
   overflow: hidden;
   transform: translateY(169.2%);
-  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 82%, transparent 100%);
-          mask-image: linear-gradient(to bottom, transparent 0%, black 22%, black 82%, transparent 100%);
+  -webkit-mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 82%, transparent 100%);
+          mask-image: linear-gradient(to bottom, transparent 0%, black 8%, black 82%, transparent 100%);
 }
 
 .cloud-canvas {
@@ -361,8 +361,16 @@ a   { color: inherit; }
     0 2px 12px rgba(0, 0, 0, 0.9);
 }
 
+.cta-column {
+  display: flex;
+  flex-direction: column;
+  align-items: stretch;
+  gap: 1.4rem;
+}
+
 .cta-btn-wrap {
-  display: inline-flex;
+  display: flex;
+  justify-content: center;
   animation: heat-aura 2.6s ease-in-out infinite;
 }
 
@@ -424,6 +432,68 @@ a   { color: inherit; }
 
 .cta-btn:hover {
   background: rgba(200, 50, 0, 0.5);
+}
+
+/* ================================================================
+   FLEET SHOWCASE BLOCK
+================================================================= */
+.fleet-block {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 1.25rem;
+  opacity: 0;
+}
+
+.fleet-img {
+  height: clamp(56px, 8vh, 80px);
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.fleet-id {
+  display: flex;
+  align-items: center;
+  gap: 1rem;
+}
+
+.fleet-id__border {
+  width: 2px;
+  height: clamp(64px, 9vh, 90px);
+  background: linear-gradient(to bottom, transparent, rgba(255, 230, 160, 0.9), transparent);
+  box-shadow:
+    0 0 8px rgba(0, 0, 0, 0.9),
+    0 0 20px rgba(0, 0, 0, 0.7);
+  transform: scaleY(0);
+  transform-origin: top center;
+  flex-shrink: 0;
+}
+
+.fleet-id__name {
+  display: flex;
+  flex-direction: column;
+  gap: 0.15em;
+}
+
+.fleet-id__line {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-weight: 400;
+  letter-spacing: 0.14em;
+  color: #fff;
+  white-space: nowrap;
+  line-height: 1;
+  text-shadow:
+    0 1px 3px #000,
+    0 2px 8px rgba(0, 0, 0, 0.95),
+    0 4px 20px rgba(0, 0, 0, 0.85);
+}
+
+.fleet-id__line--1 { font-size: clamp(1.8rem, 4vw, 3rem); }
+.fleet-id__line--2 {
+  font-size: clamp(1rem, 2.2vw, 1.7rem);
+  letter-spacing: 0.2em;
+  color: rgba(255, 220, 160, 0.85);
 }
 
 /* ================================================================
