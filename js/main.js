@@ -272,7 +272,7 @@ document.querySelectorAll('.card').forEach(card => {
 
   tl.to(card,
     { y: -(window.innerHeight * 0.55), opacity: 0, yPercent: -50, duration: 0.75, ease: 'power2.in' },
-    tIn + 0.25
+    tIn + 0.625
   );
 });
 
