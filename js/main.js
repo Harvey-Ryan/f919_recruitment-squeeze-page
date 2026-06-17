@@ -255,15 +255,13 @@ document.querySelectorAll('.quote').forEach(q => {
 });
 
 // Clouds anchored to planet top — same 110vh absolute travel as planet
-tl.fromTo('.layer--clouds',
-  { y: '169.2%', immediateRender: false },
+tl.to('.layer--clouds',
   { y: 0, ease: 'power1.out', duration: 4 },
   4
 );
 
 // Planet rises and locks at 50% scroll (t=8)
-tl.fromTo('.layer--planet',
-  { y: '110%', immediateRender: false },
+tl.to('.layer--planet',
   { y: 0, ease: 'power1.out', duration: 4 },
   4
 );
@@ -286,8 +284,7 @@ tl.fromTo('.cta-block',
 // All travel 25vh; clouds: 25/65×100 = 38.5% of their 65vh height
 // Phase 3a (37.5%→56% scroll, t=6→8.96): foreground drifts up like a camera pan.
 // Accounts for top 40% empty vector — settles at y:'40%' before all layers lock.
-tl.fromTo('.layer--foreground',
-  { y: '100%', immediateRender: false },
+tl.to('.layer--foreground',
   { y: '40%', ease: 'none', duration: 2.96 },
   6.0
 );
@@ -295,21 +292,16 @@ tl.fromTo('.layer--foreground',
 // Phase 3b (56%→100% scroll, t=8.96→16): all layers locked and rise together 40vh.
 // Foreground ends at y:0 (no clipping). Planet travels to y:'-40%' (bottom at 60vh)
 // so foreground content (starts at 40vh) overlaps planet by only 20vh.
-// immediateRender:false prevents each second tween from overwriting the first tween's
-// immediately-rendered from state.
-tl.fromTo('.layer--foreground',
-  { y: '40%', immediateRender: false },
+tl.to('.layer--foreground',
   { y: 0, ease: 'none', duration: 7.04 },
   8.96
 );
-tl.fromTo('.layer--planet',
-  { y: 0, immediateRender: false },
+tl.to('.layer--planet',
   { y: '-40%', ease: 'none', duration: 7.04 },
   8.96
 );
 // Clouds: 40vh / 65vh height = 61.5%
-tl.fromTo('.layer--clouds',
-  { y: 0, immediateRender: false },
+tl.to('.layer--clouds',
   { y: '-61.5%', ease: 'none', duration: 7.04 },
   8.96
 );
