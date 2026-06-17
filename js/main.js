@@ -3,6 +3,8 @@
 ================================================================= */
 gsap.registerPlugin(ScrollTrigger);
 
+const isMobile = window.matchMedia('(max-width: 768px)').matches;
+
 const lenis = new Lenis({
   duration: 1.4,
   easing: t => Math.min(1, 1.001 - Math.pow(2, -10 * t)),
@@ -286,23 +288,21 @@ tl.fromTo('.cta-block',
 // All travel 25vh; clouds: 25/65×100 = 38.5% of their 65vh height
 // Phase 3a (37.5%→56% scroll, t=6→8.96): foreground drifts up like a camera pan.
 // Accounts for top 40% empty vector — settles at y:'40%' before all layers lock.
-tl.fromTo('.layer--foreground',
-  { y: '100%' },
-  { y: '40%', ease: 'none', duration: 2.96 },
-  6.0
-);
-
-// Phase 3b (56%→100% scroll, t=8.96→16): all layers locked and rise together 40vh.
-// Foreground ends at y:0 (no clipping). Planet travels to y:'-40%' (bottom at 60vh)
-// so foreground content (starts at 40vh) overlaps planet by only 20vh.
-// `to` tweens have immediateRender:false by default so they never overwrite the
-// off-screen positions set by Phase 3a's fromTo. startAt provides an explicit
-// starting value so GSAP doesn't rely on lazy state capture (which breaks on mobile
-// when the viewport height shifts between phases).
-tl.to('.layer--foreground',
-  { y: 0, ease: 'none', duration: 7.04, startAt: { y: '40%' } },
-  8.96
-);
+if (isMobile) {
+  // Mobile: skip parallax animation — snap foreground to final position at Phase 3b start
+  tl.set('.layer--foreground', { y: 0, immediateRender: false }, 8.96);
+} else {
+  // Desktop: full two-phase foreground animation
+  tl.fromTo('.layer--foreground',
+    { y: '100%' },
+    { y: '40%', ease: 'none', duration: 2.96 },
+    6.0
+  );
+  tl.to('.layer--foreground',
+    { y: 0, ease: 'none', duration: 7.04, startAt: { y: '40%' } },
+    8.96
+  );
+}
 tl.to('.layer--planet',
   { y: '-40%', ease: 'none', duration: 7.04, startAt: { y: 0 } },
   8.96
