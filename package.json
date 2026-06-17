@@ -1,0 +1,10 @@
+{
+  "name": "f919-recruitment",
+  "version": "1.0.0",
+  "scripts": {
+    "start": "serve . -p $PORT"
+  },
+  "dependencies": {
+    "serve": "^14.0.0"
+  }
+}
