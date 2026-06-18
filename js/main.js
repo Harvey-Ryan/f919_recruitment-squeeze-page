@@ -421,6 +421,16 @@ gsap.to('.scroll-hint', {
   },
 });
 
+// One-shot bounce on load to prompt scrolling (2 full cycles, then hands off to CSS pulse)
+gsap.to('.scroll-hint', {
+  y: 20,
+  ease: 'power1.inOut',
+  duration: 0.4,
+  delay: 1.0,
+  yoyo: true,
+  repeat: 19,
+});
+
 // Reveal layers after ScrollTrigger's first refresh so all initial
 // transforms are locked in before elements become visible
 function onFirstRefresh() {
