@@ -196,12 +196,53 @@
   <!-- Info section (desktop only) — slides in when scene exits -->
   <div class="info">
     <div class="info__content" data-lenis-prevent>
-      <div class="info__placeholder">
-        <div class="info__section"><span>FAQ</span></div>
-        <div class="info__section"><span>Stats</span></div>
-        <div class="info__section"><span>Etc.</span></div>
-      </div>
-    </div>
+      <div class="info__body">
+
+        <!-- About -->
+        <section class="info__about">
+          <p class="info__about-text">Fleet 919 is a North America based Star Citizen org with members spread across timezones. We make room for all play styles — whether that's Industrial, FPS, Pilots, or any other game loop Star Citizen has to offer.</p>
+          <p class="info__about-text">No time-in-game requirements. Discord is required and voice chat is preferred. We're open to new players and veterans alike who are looking for a down to earth gaming community that understands real life takes precedence.</p>
+        </section>
+
+        <!-- Stat + link cards -->
+        <div class="info__cards">
+          <div class="info__card">
+            <span class="info__card-value">50+</span>
+            <span class="info__card-label">Members</span>
+          </div>
+          <div class="info__card">
+            <span class="info__card-value">NA</span>
+            <span class="info__card-label">All Timezones</span>
+          </div>
+          <div class="info__card">
+            <span class="info__card-value">18+</span>
+            <span class="info__card-label">Age Requirement</span>
+          </div>
+          <a class="info__card info__card--rsi" href="https://robertsspaceindustries.com/en/orgs/F919" target="_blank" rel="noopener noreferrer">
+            <img class="info__rsi-logo" src="https://robertsspaceindustries.com/favicon.ico" alt="RSI" />
+            <span class="info__card-label">View Org on RSI</span>
+          </a>
+        </div>
+
+        <!-- FAQ -->
+        <section class="info__faq">
+          <h3 class="info__faq-heading">FAQ</h3>
+          <div class="info__faq-item">
+            <p class="info__faq-q">Do I have to fly?</p>
+            <p class="info__faq-a">No, we're happy to chauffeur you around.</p>
+          </div>
+          <div class="info__faq-item">
+            <p class="info__faq-q">Are there ranks to climb?</p>
+            <p class="info__faq-a">No. Fleet 919 is built around the idea that no single player is more important than another. This is a community of friends simply playing a game together.</p>
+          </div>
+          <div class="info__faq-item">
+            <p class="info__faq-q">Do you run events?</p>
+            <p class="info__faq-a">Yes. Fleet 919 typically schedules larger events in the evenings on the weekends when the state of the game allows it.</p>
+          </div>
+        </section>
+
+      </div><!-- /info__body -->
+    </div><!-- /info__content -->
   </div>
 
   <!-- GSAP core + ScrollTrigger -->

@@ -855,36 +855,115 @@ a   { color: inherit; }
   background: rgba(255, 255, 255, 0.3);
 }
 
-/* Placeholder sections — three stacked wireframes to show scroll behavior */
-.info__placeholder {
+/* Info body — constrained width, padded content column */
+.info__body {
+  max-width: 960px;
+  margin: 0 auto;
+  padding: 3rem 2.5rem 5rem;
+}
+
+/* About text */
+.info__about {
+  margin-bottom: 2.5rem;
+}
+
+.info__about-text {
+  font-size: 1rem;
+  line-height: 1.8;
+  color: rgba(255, 255, 255, 0.72);
+  letter-spacing: 0.02em;
+}
+
+.info__about-text + .info__about-text {
+  margin-top: 1rem;
+}
+
+/* Stat + link cards */
+.info__cards {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 1rem;
+  margin-bottom: 3rem;
+}
+
+.info__card {
+  background: rgba(30, 32, 38, 0.60);
+  border: 1px solid rgba(255, 255, 255, 0.06);
+  border-radius: 8px;
+  padding: 1.5rem 1rem;
   display: flex;
   flex-direction: column;
-  gap: 1.5rem;
-  padding: 1.5rem;
-}
-
-.info__section {
-  height: 45vh;
-  display: flex;
   align-items: center;
   justify-content: center;
-  border: 1px dashed rgba(255, 255, 255, 0.1);
-  border-radius: 4px;
-  background: repeating-linear-gradient(
-    45deg,
-    transparent,
-    transparent 24px,
-    rgba(255, 255, 255, 0.013) 24px,
-    rgba(255, 255, 255, 0.013) 48px
-  );
-  flex-shrink: 0;
+  text-align: center;
+  gap: 0.45rem;
+  box-shadow:
+    inset 1px 1px 0 rgba(255, 255, 255, 0.12),
+    inset -1px -1px 0 rgba(0, 0, 0, 0.60),
+    0 4px 16px rgba(0, 0, 0, 0.4);
 }
 
-.info__section span {
-  font-size: 0.65rem;
-  letter-spacing: 0.3em;
+.info__card-value {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-size: 2.4rem;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1;
+}
+
+.info__card-label {
+  font-size: 0.62rem;
+  letter-spacing: 0.26em;
   text-transform: uppercase;
-  color: rgba(255, 255, 255, 0.2);
+  color: rgba(255, 255, 255, 0.4);
+}
+
+.info__card--rsi {
+  text-decoration: none;
+  transition: background 0.2s ease;
+  cursor: pointer;
+}
+
+.info__card--rsi:hover {
+  background: rgba(40, 45, 55, 0.75);
+}
+
+.info__rsi-logo {
+  width: 32px;
+  height: 32px;
+  object-fit: contain;
+  filter: brightness(0) invert(1);
+  opacity: 0.75;
+}
+
+/* FAQ */
+.info__faq-heading {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-size: 1.6rem;
+  letter-spacing: 0.12em;
+  color: rgba(255, 255, 255, 0.88);
+  margin-bottom: 1.5rem;
+  padding-bottom: 0.75rem;
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+}
+
+.info__faq-item {
+  margin-bottom: 1.5rem;
+}
+
+.info__faq-q {
+  font-weight: 700;
+  font-size: 0.95rem;
+  color: rgba(255, 255, 255, 0.9);
+  letter-spacing: 0.03em;
+  margin-bottom: 0.3rem;
+}
+
+.info__faq-a {
+  font-size: 0.9rem;
+  line-height: 1.75;
+  color: rgba(255, 255, 255, 0.58);
+  letter-spacing: 0.02em;
 }
 
 @media (max-width: 768px) {
