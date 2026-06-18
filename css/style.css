@@ -630,6 +630,7 @@ a   { color: inherit; }
    SCROLL HUD
 ================================================================= */
 #scroll-hud {
+  display: none;
   position: fixed;
   top: 1rem;
   right: 1rem;

@@ -451,10 +451,9 @@ const scrollHintBounce = gsap.to('.scroll-hint', {
 
 /* ================================================================
    SCROLL HINT MORPH — swap to "LEARN MORE" + chevrons after CTA renders
-   Fires at 70% scroll with a 1.5s delay so the scrub has time to catch
-   up and the CTA is fully visible before the hint changes.
+   Desktop only: mobile keeps the plain SCROLL hint throughout.
 ================================================================= */
-ScrollTrigger.create({
+if (!isMobile) ScrollTrigger.create({
   trigger: '.scene-section',
   start: '70% top',
   once: true,
@@ -470,7 +469,7 @@ ScrollTrigger.create({
       })
       .to('.scroll-hint', { opacity: 1, duration: 0.3, ease: 'none' });
   },
-});
+}); // end if (!isMobile)
 
 /* ================================================================
    SCENE EXIT (desktop only) — one-shot at 77% scroll
