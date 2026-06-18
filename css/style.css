@@ -816,9 +816,10 @@ a   { color: inherit; }
 }
 
 /* ================================================================
-   BELOW FOLD — fixed overlay, desktop only, revealed when scene exits
+   INFO — fixed-height panel, desktop only, revealed when scene exits
+   Inner content area scrolls independently via overflow-y: auto.
 ================================================================= */
-.below-fold {
+.info {
   position: fixed;
   top: 64px;
   left: 0;
@@ -829,13 +830,45 @@ a   { color: inherit; }
   pointer-events: none;
 }
 
-.below-fold__placeholder {
+.info__content {
   height: 100%;
+  overflow-y: auto;
+  overscroll-behavior: contain;
+  scrollbar-width: thin;
+  scrollbar-color: rgba(255, 255, 255, 0.15) transparent;
+}
+
+.info__content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.info__content::-webkit-scrollbar-track {
+  background: transparent;
+}
+
+.info__content::-webkit-scrollbar-thumb {
+  background: rgba(255, 255, 255, 0.15);
+  border-radius: 2px;
+}
+
+.info__content::-webkit-scrollbar-thumb:hover {
+  background: rgba(255, 255, 255, 0.3);
+}
+
+/* Placeholder sections — three stacked wireframes to show scroll behavior */
+.info__placeholder {
+  display: flex;
+  flex-direction: column;
+  gap: 1.5rem;
+  padding: 1.5rem;
+}
+
+.info__section {
+  height: 45vh;
   display: flex;
   align-items: center;
   justify-content: center;
   border: 1px dashed rgba(255, 255, 255, 0.1);
-  margin: 1.5rem;
   border-radius: 4px;
   background: repeating-linear-gradient(
     45deg,
@@ -844,19 +877,19 @@ a   { color: inherit; }
     rgba(255, 255, 255, 0.013) 24px,
     rgba(255, 255, 255, 0.013) 48px
   );
+  flex-shrink: 0;
 }
 
-.below-fold__label {
+.info__section span {
   font-size: 0.65rem;
-  letter-spacing: 0.35em;
+  letter-spacing: 0.3em;
   text-transform: uppercase;
   color: rgba(255, 255, 255, 0.2);
-  text-align: center;
 }
 
 @media (max-width: 768px) {
   .site-header,
-  .below-fold {
+  .info {
     display: none;
   }
 }

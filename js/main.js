@@ -220,7 +220,7 @@ gsap.set('.layer--planet',     { y: '110%' });
 gsap.set('.layer--clouds',     { y: '169.2%' });
 gsap.set('.fleet-block', { opacity: 0 });
 gsap.set('.site-header', { yPercent: -100 });
-gsap.set('.below-fold',  { y: window.innerHeight });
+gsap.set('.info', { y: window.innerHeight });
 
 const tl = gsap.timeline({
   scrollTrigger: {
@@ -491,7 +491,12 @@ if (!isMobile) {
           ease: 'power2.out',
           onComplete() { header.style.pointerEvents = 'auto'; },
         }, 0.4)
-        .to('.below-fold', { y: 0, duration: 0.6, ease: 'power2.out' }, 0.4);
+        .to('.info', {
+          y: 0,
+          duration: 0.6,
+          ease: 'power2.out',
+          onComplete() { document.querySelector('.info').style.pointerEvents = 'auto'; },
+        }, 0.4);
     },
   });
 }
