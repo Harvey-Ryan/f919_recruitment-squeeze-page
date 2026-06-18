@@ -967,9 +967,26 @@ a   { color: inherit; }
 }
 
 @media (max-width: 768px) {
-  .site-header,
-  .info {
+  .site-header {
     display: none;
+  }
+
+  /* Info sits in normal document flow on mobile — no fixed overlay */
+  .info {
+    position: static;
+  }
+
+  .info__content {
+    height: auto;
+    overflow-y: visible;
+  }
+
+  .info__body {
+    padding: 2rem 1.25rem 4rem;
+  }
+
+  .info__cards {
+    grid-template-columns: repeat(2, 1fr);
   }
 }
 

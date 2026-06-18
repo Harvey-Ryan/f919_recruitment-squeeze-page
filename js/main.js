@@ -220,7 +220,7 @@ gsap.set('.layer--planet',     { y: '110%' });
 gsap.set('.layer--clouds',     { y: '169.2%' });
 gsap.set('.fleet-block', { opacity: 0 });
 gsap.set('.site-header', { yPercent: -100 });
-gsap.set('.info', { y: window.innerHeight });
+if (!isMobile) gsap.set('.info', { y: window.innerHeight });
 
 const tl = gsap.timeline({
   scrollTrigger: {
@@ -451,9 +451,8 @@ const scrollHintBounce = gsap.to('.scroll-hint', {
 
 /* ================================================================
    SCROLL HINT MORPH — swap to "LEARN MORE" + chevrons after CTA renders
-   Desktop only: mobile keeps the plain SCROLL hint throughout.
 ================================================================= */
-if (!isMobile) ScrollTrigger.create({
+ScrollTrigger.create({
   trigger: '.scene-section',
   start: '70% top',
   once: true,
@@ -469,7 +468,7 @@ if (!isMobile) ScrollTrigger.create({
       })
       .to('.scroll-hint', { opacity: 1, duration: 0.3, ease: 'none' });
   },
-}); // end if (!isMobile)
+});
 
 /* ================================================================
    SCENE EXIT (desktop only) — one-shot at 77% scroll
