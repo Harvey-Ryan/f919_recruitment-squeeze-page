@@ -635,7 +635,6 @@ a   { color: inherit; }
   top: 1rem;
   right: 1rem;
   z-index: 9999;
-  display: flex;
   flex-direction: column;
   align-items: flex-end;
   gap: 0.25rem;
