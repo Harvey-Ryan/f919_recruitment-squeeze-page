@@ -250,6 +250,17 @@ tl.to(document.documentElement, {
   ease: 'none', duration: 20,
 }, 0);
 
+// "Meet the Crew" — pops in dead centre at 5% scroll, fades by 7%
+tl.fromTo('.meet-crew',
+  { opacity: 0, xPercent: -50, yPercent: -50 },
+  { opacity: 1, xPercent: -50, yPercent: -50, duration: 0.15, ease: 'power2.out' },
+  0.6
+);
+tl.to('.meet-crew',
+  { y: -(window.innerHeight * 0.55), opacity: 0, duration: 0.6, ease: 'power2.in' },
+  1.4
+);
+
 // Quotes — marquee style: pop in from the side, then scroll upward off screen
 // Entry (0.25) + exit (0.75) = 1.0 unit, filling the gap between each quote
 document.querySelectorAll('.quote').forEach(q => {
@@ -265,7 +276,7 @@ document.querySelectorAll('.quote').forEach(q => {
 
   // Scroll upward off screen, fading in the final stretch
   tl.to(q,
-    { y: -(window.innerHeight * 0.65), opacity: 0, yPercent: -50, duration: 0.75, ease: 'power2.in' },
+    { y: -(window.innerHeight * 0.65), opacity: 0, yPercent: -50, duration: 0.55, ease: 'power2.in' },
     tIn + 0.45
   );
 });
@@ -319,7 +330,7 @@ tl.fromTo('.cta-block',
 // then both lines type out. All chained so each step fires immediately after the last.
 ScrollTrigger.create({
   trigger: '.scene-section',
-  start: '72% top',
+  start: '73% top',
   once: true,
   onEnter() {
     const LINES = [
