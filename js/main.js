@@ -257,8 +257,8 @@ tl.fromTo('.meet-crew',
   0.6
 );
 tl.to('.meet-crew',
-  { y: -(window.innerHeight * 0.55), opacity: 0, duration: 0.6, ease: 'power2.in' },
-  1.4
+  { y: -(window.innerHeight * 0.55), opacity: 0, duration: 1.0, ease: 'power2.in' },
+  1.0
 );
 
 // Quotes — marquee style: pop in from the side, then scroll upward off screen
@@ -330,7 +330,7 @@ tl.fromTo('.cta-block',
 // then both lines type out. All chained so each step fires immediately after the last.
 ScrollTrigger.create({
   trigger: '.scene-section',
-  start: '73% top',
+  start: '70% top',
   once: true,
   onEnter() {
     const LINES = [
