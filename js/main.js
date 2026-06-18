@@ -219,6 +219,8 @@ gsap.set('.layer--foreground', { y: '100%' });
 gsap.set('.layer--planet',     { y: '110%' });
 gsap.set('.layer--clouds',     { y: '169.2%' });
 gsap.set('.fleet-block', { opacity: 0 });
+gsap.set('.site-header', { yPercent: -100 });
+gsap.set('.below-fold',  { y: window.innerHeight });
 
 const tl = gsap.timeline({
   scrollTrigger: {
@@ -241,14 +243,15 @@ tl.to(laserState,
   0
 );
 
-// Laser colour: blue → red across full timeline
+// Laser colour: blue → red, timed to the moment the beam hits the planet surface (~t=7.3)
+// Starts shifting just before contact, completes as planet fully rises
 tl.to(document.documentElement, {
   '--laser-core':    '#fff6f0',
   '--laser-mid':     '#ff2800',
   '--laser-mid-tip': 'rgba(255, 80, 0, 0.3)',
   '--laser-outer':   'rgba(255, 60, 0, 0.2)',
-  ease: 'none', duration: 20,
-}, 0);
+  ease: 'power2.out', duration: 2.5,
+}, 7);
 
 // "Meet the Crew" — pops in dead centre at 5% scroll, fades by 7%
 tl.fromTo('.meet-crew',
@@ -400,6 +403,10 @@ if (!isMobile) {
     { y: '-61.5%', ease: 'none', duration: 2.8, startAt: { y: 0 } },
     11.2
   );
+  // Pad desktop timeline to 20 units — mobile foreground tween (t=14, dur=6) does this
+  // naturally on mobile; on desktop the last real tween ends at t=14.6 which compresses
+  // the scroll map and causes the scene exit to fire before the CTA renders.
+  tl.to({}, { duration: 5.4 }, 14.6);
 }
 // CTA and laser remain fixed at their initial rendered positions through Phase 3b
 
@@ -432,8 +439,8 @@ gsap.to('.scroll-hint', {
   },
 });
 
-// One-shot bounce on load to prompt scrolling (2 full cycles, then hands off to CSS pulse)
-gsap.to('.scroll-hint', {
+// One-shot bounce on load to prompt scrolling; stored so it can be killed when CTA arrives
+const scrollHintBounce = gsap.to('.scroll-hint', {
   y: 20,
   ease: 'power1.inOut',
   duration: 0.4,
@@ -441,6 +448,53 @@ gsap.to('.scroll-hint', {
   yoyo: true,
   repeat: 19,
 });
+
+/* ================================================================
+   SCROLL HINT MORPH — swap to "LEARN MORE" + chevrons after CTA renders
+   Fires at 70% scroll with a 1.5s delay so the scrub has time to catch
+   up and the CTA is fully visible before the hint changes.
+================================================================= */
+ScrollTrigger.create({
+  trigger: '.scene-section',
+  start: '70% top',
+  once: true,
+  onEnter() {
+    scrollHintBounce.kill();
+    gsap.set('.scroll-hint', { y: 0 });
+    gsap.timeline({ delay: 1.5 })
+      .to('.scroll-hint', { opacity: 0, duration: 0.25, ease: 'none' })
+      .call(() => {
+        document.querySelector('.scroll-hint__label').textContent = 'LEARN MORE';
+        document.querySelector('.scroll-hint__line').style.display = 'none';
+        document.querySelector('.scroll-hint__chevrons').style.display = 'flex';
+      })
+      .to('.scroll-hint', { opacity: 1, duration: 0.3, ease: 'none' });
+  },
+});
+
+/* ================================================================
+   SCENE EXIT (desktop only) — one-shot at 77% scroll
+   Scene slides up, header drops in, below-fold rises from bottom.
+================================================================= */
+if (!isMobile) {
+  ScrollTrigger.create({
+    trigger: '.scene-section',
+    start: '77% top',
+    once: true,
+    onEnter() {
+      const header = document.querySelector('.site-header');
+      gsap.timeline()
+        .to('.scene-stage', { y: '-100vh', duration: 0.8, ease: 'power3.inOut' })
+        .to('.site-header', {
+          yPercent: 0,
+          duration: 0.5,
+          ease: 'power2.out',
+          onComplete() { header.style.pointerEvents = 'auto'; },
+        }, 0.4)
+        .to('.below-fold', { y: 0, duration: 0.6, ease: 'power2.out' }, 0.4);
+    },
+  });
+}
 
 // Reveal layers after ScrollTrigger's first refresh so all initial
 // transforms are locked in before elements become visible

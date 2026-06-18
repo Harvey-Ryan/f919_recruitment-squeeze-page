@@ -667,10 +667,13 @@ a   { color: inherit; }
 }
 
 .scroll-hint__label {
-  font-size: 0.72rem;
-  letter-spacing: 0.38em;
-  color: rgba(255, 255, 255, 0.75);
-  text-shadow: 0 0 18px rgba(255, 255, 255, 0.4);
+  font-size: 0.9rem;
+  letter-spacing: 0.32em;
+  color: rgba(255, 255, 255, 0.95);
+  text-shadow:
+    0 1px 4px rgba(0, 0, 0, 0.85),
+    0 2px 12px rgba(0, 0, 0, 0.7),
+    0 0 24px rgba(255, 255, 255, 0.35);
 }
 
 .scroll-hint__line {
@@ -684,5 +687,177 @@ a   { color: inherit; }
 @keyframes hint-pulse {
   0%, 100% { transform: scaleY(1);    opacity: 0.75; }
   50%       { transform: scaleY(0.3);  opacity: 1;    }
+}
+
+.scroll-hint__chevrons {
+  display: none;
+  flex-direction: column;
+  align-items: center;
+  gap: 6px;
+}
+
+.scroll-hint__chevron {
+  width: 18px;
+  height: 18px;
+  border-right: 2.5px solid rgba(255, 255, 255, 0.9);
+  border-bottom: 2.5px solid rgba(255, 255, 255, 0.9);
+  transform: rotate(45deg);
+  filter: drop-shadow(0 1px 3px rgba(0, 0, 0, 0.8));
+  animation: chevron-pulse 1.8s ease-in-out infinite;
+}
+
+.scroll-hint__chevron:nth-child(2) {
+  animation-delay: 0.22s;
+}
+
+@keyframes chevron-pulse {
+  0%, 100% { opacity: 0.3; }
+  50%       { opacity: 0.85; }
+}
+
+/* ================================================================
+   SITE HEADER — compact fixed bar, slides in from top when scene exits
+================================================================= */
+.site-header {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  height: 64px;
+  z-index: 200;
+  background: rgba(1, 4, 8, 0.94);
+  backdrop-filter: blur(14px);
+  -webkit-backdrop-filter: blur(14px);
+  border-bottom: 1px solid rgba(255, 255, 255, 0.07);
+  pointer-events: none;
+}
+
+.site-header__inner {
+  max-width: 2560px;
+  margin: 0 auto;
+  height: 100%;
+  display: flex;
+  align-items: center;
+  padding: 0 2.5rem;
+  gap: 2rem;
+}
+
+.site-header__title {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-size: 1.7rem;
+  letter-spacing: 0.08em;
+  color: rgba(255, 255, 255, 0.95);
+  flex: 1;
+  text-shadow:
+    0 0 20px rgba(255, 80, 0, 0.35),
+    0 2px 6px rgba(0, 0, 0, 0.8);
+}
+
+.site-header__btn {
+  display: inline-block;
+  text-decoration: none;
+  padding: 0.45em 1.8em;
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-size: 0.95rem;
+  letter-spacing: 0.2em;
+  text-transform: uppercase;
+  color: #fff;
+  background: rgba(140, 30, 0, 0.4);
+  border: 1px solid var(--laser-mid);
+  clip-path: polygon(
+    8px 0%, calc(100% - 8px) 0%,
+    100% 8px, 100% calc(100% - 8px),
+    calc(100% - 8px) 100%, 8px 100%,
+    0% calc(100% - 8px), 0% 8px
+  );
+  text-shadow: 0 0 14px var(--laser-mid);
+  transition: background 0.2s ease;
+  white-space: nowrap;
+  cursor: pointer;
+}
+
+.site-header__btn:hover {
+  background: rgba(200, 50, 0, 0.55);
+}
+
+.site-header__fleet {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+
+.site-header__fleet-img {
+  height: 28px;
+  width: auto;
+  object-fit: contain;
+  flex-shrink: 0;
+}
+
+.site-header__fleet-text {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+}
+
+.site-header__fleet-line1 {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-size: 1rem;
+  letter-spacing: 0.14em;
+  color: rgba(255, 255, 255, 0.95);
+  line-height: 1.1;
+}
+
+.site-header__fleet-line2 {
+  font-family: 'Bebas Neue', 'Impact', sans-serif;
+  font-size: 0.65rem;
+  letter-spacing: 0.22em;
+  color: rgba(255, 220, 160, 0.8);
+  line-height: 1.1;
+}
+
+/* ================================================================
+   BELOW FOLD — fixed overlay, desktop only, revealed when scene exits
+================================================================= */
+.below-fold {
+  position: fixed;
+  top: 64px;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  z-index: 50;
+  background: #060d14;
+  pointer-events: none;
+}
+
+.below-fold__placeholder {
+  height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border: 1px dashed rgba(255, 255, 255, 0.1);
+  margin: 1.5rem;
+  border-radius: 4px;
+  background: repeating-linear-gradient(
+    45deg,
+    transparent,
+    transparent 24px,
+    rgba(255, 255, 255, 0.013) 24px,
+    rgba(255, 255, 255, 0.013) 48px
+  );
+}
+
+.below-fold__label {
+  font-size: 0.65rem;
+  letter-spacing: 0.35em;
+  text-transform: uppercase;
+  color: rgba(255, 255, 255, 0.2);
+  text-align: center;
+}
+
+@media (max-width: 768px) {
+  .site-header,
+  .below-fold {
+    display: none;
+  }
 }
 
