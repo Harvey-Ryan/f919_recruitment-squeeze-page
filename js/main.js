@@ -181,19 +181,20 @@ const laserOffset = { y: 0 };  // px offset applied in Phase 3 to move laser wit
 
 (function initLaserAnchor() {
   const laser = document.querySelector('.laser');
+  const stage = document.querySelector('.scene-stage');
   const img   = document.querySelector('.station-img');
   const ph    = document.querySelector('.placeholder--station');
 
   function update() {
-    const el   = (!img.hidden && img.complete && img.naturalWidth > 0) ? img : ph;
-    const rect = el.getBoundingClientRect();
+    const el        = (!img.hidden && img.complete && img.naturalWidth > 0) ? img : ph;
+    const rect      = el.getBoundingClientRect();
+    const stageRect = stage.getBoundingClientRect();
 
-    const tipY   = window.innerHeight * 0.55;
-    const span   = Math.max(0, tipY - rect.bottom);
-    const height = span * laserState.progress;
+    const tipY = window.innerHeight * 0.55;
+    const span = Math.max(0, tipY - rect.bottom);
 
-    laser.style.left   = `${rect.left + rect.width * 0.5}px`;
-    laser.style.top    = `${rect.bottom + laserOffset.y}px`;
+    laser.style.left   = `${rect.left + rect.width * 0.5 - stageRect.left}px`;
+    laser.style.top    = `${rect.bottom - stageRect.top + laserOffset.y}px`;
     laser.style.height = `${span * laserState.progress}px`;
   }
 
