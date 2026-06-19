@@ -929,11 +929,10 @@ a   { color: inherit; }
 }
 
 .info__rsi-logo {
-  width: 32px;
-  height: 32px;
+  width: 80%;
+  max-width: 120px;
+  height: auto;
   object-fit: contain;
-  filter: brightness(0) invert(1);
-  opacity: 0.75;
 }
 
 /* FAQ */
