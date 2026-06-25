@@ -2,8 +2,7 @@
   'use strict';
 
   // ── Config ──────────────────────────────────────────────────────────────────
-  // API_BASE is injected at container startup via js/config.js (HEATMAP_API_BASE env var).
-  const API_BASE = (window.HEATMAP_API_BASE || '').replace(/\/$/, '');
+  const API_BASE = 'https://rolecallbot-production.up.railway.app';
   const GUILD_ID = '1497395378495160493';
   const DAYS_WINDOW = 365;
 
@@ -125,7 +124,7 @@
     root.innerHTML = '';
     try {
       const qs  = new URLSearchParams({ guildId: GUILD_ID, type, timezone, days: String(DAYS_WINDOW) });
-      const res = await fetch(`${API_BASE}/api/rolecall/public/heatmap?${qs}`);
+      const res = await fetch(`${API_BASE}/api/public/heatmap?${qs}`);
       if (!res.ok) throw new Error(`HTTP ${res.status}`);
       const data = await res.json();
       render(root, data.grid);
