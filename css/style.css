@@ -965,6 +965,131 @@ a   { color: inherit; }
   letter-spacing: 0.02em;
 }
 
+/* Activity Heatmap */
+.info__heatmap {
+  margin-bottom: 3rem;
+}
+
+.heatmap-top {
+  display: flex;
+  align-items: baseline;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  margin-bottom: 1rem;
+}
+
+.heatmap-options {
+  display: flex;
+  align-items: center;
+  gap: 0.6rem;
+}
+
+.heatmap-tabs {
+  display: flex;
+  gap: 0.2rem;
+}
+
+.heatmap-tab {
+  padding: 0.22rem 0.65rem;
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  background: transparent;
+  color: rgba(255, 255, 255, 0.4);
+  font-size: 0.65rem;
+  letter-spacing: 0.12em;
+  text-transform: uppercase;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s, border-color 0.15s;
+}
+
+.heatmap-tab:hover {
+  color: rgba(255, 255, 255, 0.75);
+  border-color: rgba(255, 255, 255, 0.22);
+}
+
+.heatmap-tab--active {
+  background: rgba(255, 200, 60, 0.1);
+  border-color: rgba(255, 200, 60, 0.4);
+  color: rgba(255, 200, 60, 0.95);
+}
+
+.heatmap-tz-select {
+  appearance: none;
+  -webkit-appearance: none;
+  background: rgba(20, 22, 28, 0.85);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 4px;
+  color: rgba(255, 255, 255, 0.45);
+  font-size: 0.65rem;
+  letter-spacing: 0.08em;
+  padding: 0.22rem 0.55rem;
+  cursor: pointer;
+  outline: none;
+}
+
+.heatmap-loading {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 110px;
+  color: rgba(255, 255, 255, 0.22);
+  font-size: 0.7rem;
+  letter-spacing: 0.18em;
+  text-transform: uppercase;
+}
+
+.hm-hour-row {
+  display: flex;
+  padding-left: 2.4rem;
+  margin-bottom: 2px;
+}
+
+.hm-hlabel {
+  flex: 1;
+  text-align: center;
+  font-size: 0.52rem;
+  letter-spacing: 0.04em;
+  color: rgba(255, 255, 255, 0.24);
+}
+
+.hm-body-row {
+  display: flex;
+  align-items: stretch;
+}
+
+.hm-days {
+  width: 2.4rem;
+  flex-shrink: 0;
+  display: flex;
+  flex-direction: column;
+}
+
+.hm-dlabel {
+  flex: 1;
+  display: flex;
+  align-items: center;
+  justify-content: flex-end;
+  padding-right: 0.4rem;
+  font-size: 0.58rem;
+  letter-spacing: 0.07em;
+  color: rgba(255, 255, 255, 0.26);
+}
+
+.hm-svg {
+  flex: 1;
+  height: 110px;
+  display: block;
+}
+
+.hm-error {
+  color: rgba(255, 255, 255, 0.28);
+  font-size: 0.78rem;
+  text-align: center;
+  padding: 2rem 0;
+  letter-spacing: 0.06em;
+}
+
 /* Back to top */
 .info__back-wrap {
   margin-top: 3.5rem;

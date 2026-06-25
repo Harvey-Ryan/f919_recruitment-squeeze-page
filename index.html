@@ -226,6 +226,29 @@
           </a>
         </div>
 
+        <!-- Activity Heatmap -->
+        <section class="info__heatmap">
+          <div class="heatmap-top">
+            <h3 class="info__faq-heading">Guild Activity</h3>
+            <div class="heatmap-options">
+              <div class="heatmap-tabs" id="heatmap-type-tabs">
+                <button class="heatmap-tab heatmap-tab--active" data-type="combined">Combined</button>
+                <button class="heatmap-tab" data-type="message">Text</button>
+                <button class="heatmap-tab" data-type="voice">Voice</button>
+              </div>
+              <select id="heatmap-tz" class="heatmap-tz-select">
+                <option value="UTC">UTC</option>
+                <option value="America/New_York">Eastern</option>
+                <option value="America/Chicago">Central</option>
+                <option value="America/Denver">Mountain</option>
+                <option value="America/Los_Angeles">Pacific</option>
+              </select>
+            </div>
+          </div>
+          <div id="heatmap-loading" class="heatmap-loading">Loading activity&hellip;</div>
+          <div id="heatmap-root"></div>
+        </section>
+
         <!-- FAQ -->
         <section class="info__faq">
           <h3 class="info__faq-heading">FAQ</h3>
@@ -260,7 +283,9 @@
     <span id="hud-pct">0%</span>
     <span id="hud-t">t 0.00</span>
   </div>
+  <script src="https://cdn.jsdelivr.net/npm/d3-contour@4/dist/d3-contour.min.js"></script>
   <script src="js/main.js?v=2"></script>
+  <script src="js/heatmap.js?v=1"></script>
   <!-- Cloudflare Web Analytics --><script defer src='https://static.cloudflareinsights.com/beacon.min.js' data-cf-beacon='{"token": "944c6d3e6ec2473c93042d6ad1746e18"}'></script><!-- End Cloudflare Web Analytics -->
 </body>
 </html>
