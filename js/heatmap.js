@@ -2,8 +2,8 @@
   'use strict';
 
   // ── Config ──────────────────────────────────────────────────────────────────
-  // Set API_BASE to your ASOP Terminal Railway URL (no trailing slash).
-  const API_BASE = 'https://YOUR_API_URL_HERE';
+  // API_BASE is injected at container startup via js/config.js (HEATMAP_API_BASE env var).
+  const API_BASE = (window.HEATMAP_API_BASE || '').replace(/\/$/, '');
   const GUILD_ID = '1497395378495160493';
   const DAYS_WINDOW = 365;
 
