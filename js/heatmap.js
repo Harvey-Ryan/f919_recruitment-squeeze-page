@@ -62,26 +62,29 @@
     ).join(' ');
   }
 
-  // ── Render into #heatmap-root ────────────────────────────────────────────────
-  function render(root, rawGrid) {
+  // ── Build contour paths for one grid ────────────────────────────────────────
+  function buildContourPaths(rawGrid, color) {
     const grid = gaussianSmooth(rawGrid);
     const peak = Math.max(1, ...grid.flat());
-
     const values = Array.from({ length: DAYS * HOURS }, (_, i) =>
       grid[Math.floor(i / HOURS)][i % HOURS]
     );
-
     const thresholds = Array.from({ length: LEVELS }, (_, i) => (peak * (i + 1)) / (LEVELS + 1));
     const contourData = d3.contours().size([HOURS, DAYS]).thresholds(thresholds)(values);
+    return contourData.map((c, i) => {
+      const alpha = (0.15 + (i / (LEVELS - 1)) * 0.8).toFixed(3);
+      return `<path d="${geoJsonToPath(c.coordinates)}" fill="${color.replace('ALPHA', alpha)}" />`;
+    }).join('');
+  }
 
+  // ── Render into #heatmap-root ────────────────────────────────────────────────
+  function render(root, textGrid, voiceGrid) {
     const uid      = Math.random().toString(36).slice(2, 8);
     const filterId = `hm-f-${uid}`;
     const clipId   = `hm-c-${uid}`;
 
-    const paths = contourData.map((c, i) => {
-      const alpha = (0.15 + (i / (LEVELS - 1)) * 0.8).toFixed(3);
-      return `<path d="${geoJsonToPath(c.coordinates)}" fill="rgba(255,200,60,${alpha})" />`;
-    }).join('');
+    const textPaths  = buildContourPaths(textGrid,  'rgba(255,155,50,ALPHA)');
+    const voicePaths = buildContourPaths(voiceGrid, 'rgba(255,200,60,ALPHA)');
 
     const dividers = Array.from({ length: 6 }, (_, d) =>
       `<line x1="0" y1="${d + 1}" x2="${HOURS}" y2="${d + 1}" stroke="rgba(0,0,0,0.25)" stroke-width="0.035" />`
@@ -110,24 +113,38 @@
           </defs>
           <rect x="0" y="0" width="${HOURS}" height="${DAYS}" fill="rgba(255,255,255,0.03)" />
           <g clip-path="url(#${clipId})">
-            <g filter="url(#${filterId})">${paths}</g>
+            <g filter="url(#${filterId})">${textPaths}</g>
+          </g>
+          <g clip-path="url(#${clipId})">
+            <g filter="url(#${filterId})">${voicePaths}</g>
           </g>
           ${dividers}
         </svg>
       </div>
+      <div class="hm-key">
+        <span class="hm-key-item">
+          <span class="hm-key-swatch" style="background:rgba(255,155,50,0.9)"></span>Text
+        </span>
+        <span class="hm-key-item">
+          <span class="hm-key-swatch" style="background:rgba(255,200,60,0.9)"></span>Voice
+        </span>
+      </div>
     `;
   }
 
-  // ── Fetch + render ───────────────────────────────────────────────────────────
-  async function load(root, loadingEl, type, timezone) {
+  // ── Fetch both layers + render ───────────────────────────────────────────────
+  async function load(root, loadingEl, timezone) {
     loadingEl.style.display = 'flex';
     root.innerHTML = '';
     try {
-      const qs  = new URLSearchParams({ guildId: GUILD_ID, type, timezone, days: String(DAYS_WINDOW) });
-      const res = await fetch(`${API_BASE}/api/public/heatmap?${qs}`);
-      if (!res.ok) throw new Error(`HTTP ${res.status}`);
-      const data = await res.json();
-      render(root, data.grid);
+      const base = { guildId: GUILD_ID, timezone, days: String(DAYS_WINDOW) };
+      const [textRes, voiceRes] = await Promise.all([
+        fetch(`${API_BASE}/api/public/heatmap?${new URLSearchParams({ ...base, type: 'message' })}`),
+        fetch(`${API_BASE}/api/public/heatmap?${new URLSearchParams({ ...base, type: 'voice' })}`),
+      ]);
+      if (!textRes.ok || !voiceRes.ok) throw new Error('HTTP error');
+      const [textData, voiceData] = await Promise.all([textRes.json(), voiceRes.json()]);
+      render(root, textData.grid, voiceData.grid);
     } catch {
       root.innerHTML = '<p class="hm-error">Activity data unavailable.</p>';
     } finally {
@@ -137,29 +154,18 @@
 
   // ── Init ─────────────────────────────────────────────────────────────────────
   document.addEventListener('DOMContentLoaded', () => {
-    const tabsEl    = document.getElementById('heatmap-type-tabs');
     const tzEl      = document.getElementById('heatmap-tz');
     const rootEl    = document.getElementById('heatmap-root');
     const loadingEl = document.getElementById('heatmap-loading');
     if (!rootEl || !loadingEl) return;
 
-    let type     = 'combined';
     let timezone = 'UTC';
-
-    tabsEl?.addEventListener('click', e => {
-      const btn = e.target.closest('[data-type]');
-      if (!btn) return;
-      tabsEl.querySelectorAll('.heatmap-tab').forEach(b => b.classList.remove('heatmap-tab--active'));
-      btn.classList.add('heatmap-tab--active');
-      type = btn.dataset.type;
-      load(rootEl, loadingEl, type, timezone);
-    });
 
     tzEl?.addEventListener('change', () => {
       timezone = tzEl.value;
-      load(rootEl, loadingEl, type, timezone);
+      load(rootEl, loadingEl, timezone);
     });
 
-    load(rootEl, loadingEl, type, timezone);
+    load(rootEl, loadingEl, timezone);
   });
 }());

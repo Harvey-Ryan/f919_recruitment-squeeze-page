@@ -1090,6 +1090,30 @@ a   { color: inherit; }
   letter-spacing: 0.06em;
 }
 
+.hm-key {
+  display: flex;
+  gap: 1.2rem;
+  margin-top: 0.5rem;
+  padding-left: 2.5rem;
+}
+
+.hm-key-item {
+  display: flex;
+  align-items: center;
+  gap: 0.35rem;
+  font-size: 0.72rem;
+  color: rgba(255, 255, 255, 0.55);
+  letter-spacing: 0.05em;
+}
+
+.hm-key-swatch {
+  display: inline-block;
+  width: 10px;
+  height: 10px;
+  border-radius: 2px;
+  flex-shrink: 0;
+}
+
 /* Back to top */
 .info__back-wrap {
   margin-top: 3.5rem;
