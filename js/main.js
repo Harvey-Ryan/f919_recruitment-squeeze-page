@@ -512,13 +512,20 @@ ScrollTrigger.addEventListener('refresh', onFirstRefresh);
   const ROLECALL_URL = 'https://rolecallbot-production.up.railway.app';
   const GUILD_ID     = '1497395378495160493';
 
+  const el = document.getElementById('stat-daily-active');
   fetch(`${ROLECALL_URL}/api/public/daily-active-avg?guildId=${GUILD_ID}`)
     .then(r => r.ok ? r.json() : r.json().then(b => Promise.reject(b)))
     .then(data => {
-      console.log('[daily-active]', data);
-      const el = document.getElementById('stat-daily-active');
-      if (el && data.avg_daily_active > 0) el.textContent = data.avg_daily_active;
+      if (data.avg_daily_active > 0) {
+        el.textContent = data.avg_daily_active;
+      } else {
+        console.error('[daily-active] API call failed or returned no data — using fallback');
+        el.textContent = '20+';
+      }
     })
-    .catch(err => { console.warn('[daily-active] error', err); });
+    .catch(err => {
+      console.error('[daily-active] API call failed — using fallback', err);
+      el.textContent = '20+';
+    });
 })();
 
