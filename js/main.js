@@ -505,3 +505,19 @@ function onFirstRefresh() {
 }
 ScrollTrigger.addEventListener('refresh', onFirstRefresh);
 
+/* ================================================================
+   DAILY ACTIVE STAT
+================================================================= */
+(function fetchDailyActive() {
+  const ROLECALL_URL = 'https://rolecallbot-production.up.railway.app';
+  const GUILD_ID     = '1497395378495160493';
+
+  fetch(`${ROLECALL_URL}/api/public/daily-active-avg?guildId=${GUILD_ID}`)
+    .then(r => r.ok ? r.json() : Promise.reject(r.status))
+    .then(data => {
+      const el = document.getElementById('stat-daily-active');
+      if (el && data.avg_daily_active > 0) el.textContent = data.avg_daily_active;
+    })
+    .catch(() => { /* leave the em-dash placeholder on failure */ });
+})();
+
